@@ -31,7 +31,7 @@ This version is NOT published to NPM at the moment. To run:
 * git checkout
 * npm i
 * npm start
-* ./bin/cli -d M/D/YYYY -- whatsapp_export.txt > result.html
+* ./bin/cli -t "Title" -d M/D/YYYY -- whatsapp_export.txt > result.html
 
 ## DOES NOT WORK! To retrieve a full export
 

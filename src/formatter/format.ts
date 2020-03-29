@@ -95,4 +95,15 @@ export function formatHtml({
   return formatMessages(messages, messageTemplates, datePattern).join("\n");
 }
 
+export const prefix = (title: string) => `<!DOCTYPE html>
+<html>
+<head>
+    <title>${title} ~ My WhatsApp Story</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>`;
+
+export const suffix = `</body></html>`;
+
 //#endregion

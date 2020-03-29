@@ -11,7 +11,7 @@ Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas 
 
 ## Features
 
-* Differs from the original whatsapp-to-html because it can take the "full export" [http://forum.xda-developers.com/showthread.php?t=2770982] for large chats [https://www.imyfone.com/whatsapp/how-to-export-large-whatsapp-chat/] as input, instead of the normal export that is limited to 10.000 messages with media files.
+* DOES NOT WORK: _Differs from the original whatsapp-to-html because it can take the ["full export"](http://forum.xda-developers.com/showthread.php?t=2770982) for [large chats](https://www.imyfone.com/whatsapp/how-to-export-large-whatsapp-chat/) as input, instead of the normal export that is limited to 10.000 messages with media files._
 * The generated HTML is very simple, so it should function on a very large term (years)
 * The HTML looks like a WhatsApp conversation
 * It can convert the HTML (by using CSS print styles) to PDF
@@ -30,9 +30,10 @@ This version is NOT published to NPM at the moment. To run:
 
 * git checkout
 * npm i
+* npm start
 * ./bin/cli -d M/D/YYYY -- whatsapp_export.txt > result.html
 
-## To retrieve a full export
+## DOES NOT WORK! To retrieve a full export
 
 ### Step 1 (old, does not work for Android 9?)
 

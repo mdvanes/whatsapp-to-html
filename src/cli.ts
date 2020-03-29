@@ -54,6 +54,7 @@ function validateArgs(
 
 function main(): void {
   const {
+    t: title,
     d: datePattern,
     a: senderAliasesPath,
     _: [filePath],
@@ -61,6 +62,7 @@ function main(): void {
 
   const errors = validateArgs(
     {
+      title,
       datePattern,
       senderAliasesPath,
       filePath,
@@ -79,6 +81,7 @@ function main(): void {
 
   const result = whatsappToHtml(
     filePath,
+    title,
     datePattern,
     senderAliasesPath &&
       JSON.parse(fs.readFileSync(senderAliasesPath).toString())

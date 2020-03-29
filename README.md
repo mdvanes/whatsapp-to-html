@@ -1,4 +1,65 @@
-# whatsapp-to-html &middot; [![Build Status](https://travis-ci.org/danplisetsky/whatsapp-to-html.svg?branch=master)](https://travis-ci.org/danplisetsky/whatsapp-to-html) [![npm](https://img.shields.io/npm/v/whatsapp-to-html.svg)](https://www.npmjs.com/package/whatsapp-to-html)
+# MyWhatsAppStory
+
+My WhatsApp Story, my-whatsapp-story
+
+A tool to convert a WhatsApp (group) conversation to a stand-alone HTML.
+
+There are other tools like this, most notably [WhatsApp Viewer](https://andreas-mausch.de/whatsapp-viewer/) but there are some differences.
+
+Heavily based on [whatsapp-to-html](https://github.com/danplisetsky/whatsapp-to-html) (see below in this readme)
+Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas Mausch](https://github.com/andreas-mausch).
+
+## Features
+
+* Differs from the original whatsapp-to-html because it can take the "full export" [http://forum.xda-developers.com/showthread.php?t=2770982] for large chats [https://www.imyfone.com/whatsapp/how-to-export-large-whatsapp-chat/] as input, instead of the normal export that is limited to 10.000 messages with media files.
+* The generated HTML is very simple, so it should function on a very large term (years)
+* The HTML looks like a WhatsApp conversation
+* It can convert the HTML (by using CSS print styles) to PDF
+* The HTML inlines the used media
+* External config that maps phone numbers for participants to their name. The config also allows specifying what participant has the "me" perspective in the conversation, and as such will be aligned to the right. Multiple participants can have the "me" perspective.
+* l10n for Dutch dates: by the default the output has date headers that look like this: <h2>Thursday, January 30, 2020</h2> but it should support <h2>Donderdag, 30 januari 2020</h2>
+
+No support for / bugs:
+
+* WhatsApp stickers
+* Leave messages are not displayed properly
+
+## Usage
+
+This version is NOT published to NPM at the moment. To run:
+
+* git checkout
+* npm i
+* ./bin/cli -d M/D/YYYY -- whatsapp_export.txt > result.html
+
+## To retrieve a full export
+
+### Step 1 (old, does not work for Android 9?)
+
+Should not work anymore: https://plainsec.org/extracting-cipher-key-from-whatsapp-on-android-7-and-greater-without-root/
+
+Follow https://forum.xda-developers.com/showthread.php?t=2770982:
+
+* Extract WhatsApp-Key-DB-Extractor-master.zip maintaining the directory structure.
+* Click on WhatsAppKeyDBExtract.bat (Windows) or WhatsAppKeyDBExtract.sh (Mac OS X / Linux).
+* Connect your device via USB, unlock your screen and wait for Full backup to appear.
+* Enter your backup password or leave blank (if none set) and tap on Back up my data.
+* Confirm backup password in your command console and then check the "extracted" folder.
+
+### Step 1 (2019)
+
+add adb to path
+https://github.com/MarcoG3/WhatsDump
+can't run ./whatsdump-linux-x86_64 --install-sdk
+
+
+### Step 2
+
+* Use WhatsApp Viewer to export to (CSV?)
+
+# Original Readme for whatsapp-to-html...
+
+**whatsapp-to-html &middot; [![Build Status](https://travis-ci.org/danplisetsky/whatsapp-to-html.svg?branch=master)](https://travis-ci.org/danplisetsky/whatsapp-to-html) [![npm](https://img.shields.io/npm/v/whatsapp-to-html.svg)](https://www.npmjs.com/package/whatsapp-to-html)**  
 
 ## The problem
 

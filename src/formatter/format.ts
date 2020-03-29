@@ -29,7 +29,8 @@ const formatAttachment = (message: string) => {
       (match, attachmentName, attachmentExt, restMessage) => {
         // console.log('FILEMATCH', match, '|', p1, '|', p2);
         if (attachmentExt === 'mp4') {
-          return `<video src="${attachmentName}.${attachmentExt}" /> ${restMessage}`;
+          // <video controls><source src="VID-20200203-WA0001.mp4" type="video/mp4"/></video>
+          return `<video controls><source src="${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
         } else {
           return `<img src="${attachmentName}.${attachmentExt}" /> ${restMessage}`;
         }

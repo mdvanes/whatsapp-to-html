@@ -119,15 +119,96 @@ export function formatHtml({
   return formatMessages(messages, messageTemplates, datePattern).join("\n");
 }
 
-export const prefix = (title: string) => `<!DOCTYPE html>
+export const htmlPreamble = (title: string) => `<!DOCTYPE html>
 <html>
 <head>
     <title>${title} ~ My WhatsApp Story</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>`;
+    <style>
 
-export const suffix = `</body></html>`;
+:root {
+    --shadow-rgb: 0, 0, 0;
+}
+
+html, body {
+    margin: 0;
+}
+
+body {
+    background-color: #d3dbda;
+    border-top: 125px solid #009688;
+}
+
+#wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+section#main {
+    box-shadow: 0 1px 1px 0 rgba(var(--shadow-rgb), 0.06),0 2px 5px 0 rgba(var(--shadow-rgb), 0.2);
+    width: calc(100vw - 30px);
+    max-width: 800px;
+    position: fixed;
+    height: calc(100vh - 30px);
+    top: 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    font-family: sans-serif;
+}
+
+section#main header {
+    background-color: #ededed;
+    height: 50px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+section#main article {
+    background-color: #e5ddd5;
+    flex: 1 0 0;
+    padding: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.avatar {
+    background-color: #009688;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    margin-right: 1rem;
+}
+
+header h1 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin: 0;
+}
+
+article img {
+    width: 100px;
+}
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <section id="main">
+        <header>
+            <div class="avatar"></div>
+            <h1>${title}</h1>
+        </header>
+        <article>
+`;
+
+export const htmlPostamble = `
+</article>
+    </section>
+</div>
+</body></html>`;
 
 //#endregion

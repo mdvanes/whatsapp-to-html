@@ -3,7 +3,7 @@ import date from "date-and-time";
 import randomColor from "randomcolor";
 
 const messageTemplate =
-  '<p><span style="color:{color}" class="participant">{sender}</span> @ <span style="color:grey;font-size:10px">{time}</span>: {message}</p>';
+  '<p><span style="color:{color}" class="participant">{sender}</span> {message} <time>{time}</time></p>';
 
 //#region INTERNALS
 
@@ -22,12 +22,9 @@ function createMessageTemplate(color: string, sender: Sender): string {
 
 const formatAttachment = (message: string) => {
   if(message.indexOf('file attached') > -1) {
-    // console.log('FILE ATTACHED', message);
-
     const resultingMessage = message.replace(
       /(.*)\.(.*) \(file attached\) (.*)/,
       (match, attachmentName, attachmentExt, restMessage) => {
-        // console.log('FILEMATCH', match, '|', p1, '|', p2);
         if (attachmentExt === 'mp4') {
           // <video controls><source src="VID-20200203-WA0001.mp4" type="video/mp4"/></video>
           return `<video controls><source src="videos/${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
@@ -37,7 +34,6 @@ const formatAttachment = (message: string) => {
       }
     );
 
-    // console.log('RESULT', resultingMessage);
     return resultingMessage;
   }
 
@@ -59,8 +55,8 @@ function formatMessages(
       "unknown sender in message: " + JSON.stringify(currentMessage)
     );
   const resultingMessage = (template as string).replace(
-    /{time}(.+){message}/,
-    (match, p1) => currentMessage.time + p1 + formatAttachment(currentMessage.message)
+    /{message}(.+){time}/,
+    (match, p1) => formatAttachment(currentMessage.message) + p1 + currentMessage.time
   );
 
   if (currentMessage.date !== currentDate) {
@@ -119,14 +115,8 @@ export function formatHtml({
   return formatMessages(messages, messageTemplates, datePattern).join("\n");
 }
 
-export const htmlPreamble = (title: string) => `<!DOCTYPE html>
-<html>
-<head>
-    <title>${title} ~ My WhatsApp Story</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-
+const style = `
+<style>
 :root {
     --shadow-rgb: 0, 0, 0;
 }
@@ -210,12 +200,19 @@ article p {
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
     display: block;
     font-size: 0.8rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.1rem 0.5rem;
     width: 70%;
 }
 
 article p .participant {
     display: block;
+}
+
+article p time {
+    display: block;
+    color: #9f9f9f;
+    font-size: 0.6rem;
+    text-align: right;
 }
 
 article h2 {
@@ -233,7 +230,16 @@ article h2 span {
     text-align: center;
     width: 300px;
 }
-    </style>
+</style>
+`;
+
+export const htmlPreamble = (title: string) => `<!DOCTYPE html>
+<html>
+<head>
+    <title>${title} ~ My WhatsApp Story</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    ${style}
 </head>
 <body>
 

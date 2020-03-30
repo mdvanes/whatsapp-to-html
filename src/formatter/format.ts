@@ -3,7 +3,7 @@ import date from "date-and-time";
 import randomColor from "randomcolor";
 
 const messageTemplate =
-  '<p><span style="color:{color}">{sender}</span> @ <span style="color:grey;font-size:10px">{time}</span>: {message}</p>';
+  '<p><span style="color:{color}" class="participant">{sender}</span> @ <span style="color:grey;font-size:10px">{time}</span>: {message}</p>';
 
 //#region INTERNALS
 
@@ -66,9 +66,9 @@ function formatMessages(
   if (currentMessage.date !== currentDate) {
     const parsedDate = date.parse(currentMessage.date, datePattern);
     const dateHeader =
-      "\n<h2>" +
+      "\n<h2><span>" +
       date.format(new Date(parsedDate), "dddd, MMMM D, YYYY") +
-      "</h2>\n";
+      "</span></h2>\n";
 
     return formatMessages(
       messages,
@@ -202,6 +202,36 @@ header h1 {
 
 article img {
     width: 100px;
+}
+
+article p {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
+    display: block;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    width: 70%;
+}
+
+article p .participant {
+    display: block;
+}
+
+article h2 {
+    display: flex;
+    justify-content: center;
+}
+
+article h2 span {
+    background: #e1f2fb;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
+    font-size: 1rem;
+    font-weight: normal;
+    padding: 0.5rem;
+    text-align: center;
+    width: 300px;
 }
     </style>
 </head>

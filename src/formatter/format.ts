@@ -30,9 +30,9 @@ const formatAttachment = (message: string) => {
         // console.log('FILEMATCH', match, '|', p1, '|', p2);
         if (attachmentExt === 'mp4') {
           // <video controls><source src="VID-20200203-WA0001.mp4" type="video/mp4"/></video>
-          return `<video controls><source src="${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
+          return `<video controls><source src="videos/${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
         } else {
-          return `<img src="${attachmentName}.${attachmentExt}" /> ${restMessage}`;
+          return `<img src="images/${attachmentName}.${attachmentExt}" /> ${restMessage}`;
         }
       }
     );
@@ -146,6 +146,7 @@ body {
 }
 
 section#main {
+    background-color: #e5ddd5;
     box-shadow: 0 1px 1px 0 rgba(var(--shadow-rgb), 0.06),0 2px 5px 0 rgba(var(--shadow-rgb), 0.2);
     width: calc(100vw - 30px);
     max-width: 800px;
@@ -165,18 +166,28 @@ section#main header {
     padding: 0.5rem;
     display: flex;
     align-items: center;
+    z-index: 10;
+}
+
+.bg-chat {
+    background: #e5ddd5 url("./images/bg-chat-tile.png");
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.06;
 }
 
 section#main article {
-    background-color: #e5ddd5;
     flex: 1 0 0;
     padding: 0.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
+    z-index: 10;
 }
 
 .avatar {
-    background-color: #009688;
+    background: #009688 url("./images/profilepic.jpg") center/100%;
     border-radius: 50%;
     height: 50px;
     width: 50px;
@@ -198,6 +209,7 @@ article img {
 
 <div id="wrapper">
     <section id="main">
+        <div class="bg-chat"></div>
         <header>
             <div class="avatar"></div>
             <h1>${title}</h1>

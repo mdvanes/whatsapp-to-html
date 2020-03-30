@@ -3,7 +3,7 @@ import date from "date-and-time";
 import randomColor from "randomcolor";
 
 const messageTemplate =
-  '<p><span style="color:{color}" class="participant">{sender}</span> {message} <time>{time}</time></p>';
+  '<p class="other"><span style="color:{color}" class="participant">{sender}</span> {message} <time>{time}</time></p>';
 
 //#region INTERNALS
 
@@ -205,7 +205,7 @@ article p {
     position: relative;
 }
 
-article p:after {
+article p.other:after {
     right: 100%;
     top: 10px;
     border: solid transparent;

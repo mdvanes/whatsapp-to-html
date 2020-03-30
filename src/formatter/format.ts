@@ -170,7 +170,7 @@ section#main header {
 
 section#main article {
     flex: 1 0 0;
-    padding: 0.5rem;
+    padding: 0.5rem 1.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
     z-index: 10;
@@ -196,12 +196,31 @@ article img {
 
 article p {
     background: white;
-    border-radius: 6px;
+    border-radius: 0 6px 6px 6px;
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
     display: block;
     font-size: 0.8rem;
     padding: 0.5rem 0.5rem 0.1rem 0.5rem;
     width: 70%;
+    position: relative;
+}
+
+article p:after {
+    right: 100%;
+    top: 10px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-right-color: white;
+    border-width: 8px;
+    margin-top: -10px;
+    /*box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);*/
+    border-top-width: 0;
+    border-bottom-width: 12px;
 }
 
 article p .participant {

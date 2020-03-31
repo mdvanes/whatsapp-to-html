@@ -1,4 +1,10 @@
-export type Sender = string;
+interface SenderObj {
+  readonly name: string;
+  readonly phone: string;
+  readonly perspective: "me" | "you";
+}
+
+export type Sender = string | SenderObj;
 
 export interface WhatsAppMessage {
   readonly date: string;

@@ -3,6 +3,7 @@ import * as os from "os";
 
 import { WhatsAppMessage, ParsedWhatsAppMessage, Sender } from "@parser/types";
 import { sanitize } from "@utils/string";
+import participantConfigJson from "../../participants-config.json";
 
 //#region INTERNALS
 
@@ -14,6 +15,12 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
   }
 
   const res = parseRegExp.exec(message);
+
+  if(res) {
+    const sender = sanitizeSender(res[3]);
+    const x = participantConfigJson[sender] ? participantConfigJson[sender]  : sender;
+    console.log(`SENDER ${sender} ${JSON.stringify(x)}`);
+  }
 
   return res
     ? {

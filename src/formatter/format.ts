@@ -1,4 +1,4 @@
-import { WhatsAppMessage, Sender } from "@parser/types";
+import { WhatsAppMessage, Sender, SenderTuple, SenderDetails } from "@parser/types";
 import date from "date-and-time";
 import randomColor from "randomcolor";
 
@@ -13,10 +13,10 @@ function generateColors(count: number): ReadonlyArray<string> {
   }) as ReadonlyArray<string>;
 }
 
-function createMessageTemplate(color: string, sender: Sender): string {
+function createMessageTemplate(color: string, sender: Sender, senderDetails: SenderDetails | false): string {
   return messageTemplate.replace(
     /{color}(.+){sender}/,
-    (match, p1) => color + p1 + sender
+    (match, p1) => color + p1 + (senderDetails ? `${senderDetails.name} (${senderDetails.phone})` : sender)
   );
 }
 
@@ -94,19 +94,20 @@ export function formatHtml({
   senderAliases,
 }: {
   readonly messages: ReadonlyArray<WhatsAppMessage>;
-  readonly senders: ReadonlySet<Sender>;
+  readonly senders: ReadonlySet<SenderTuple>;
   readonly datePattern: string;
   readonly senderAliases?: { readonly [s: string]: string };
 }): string {
   const colors = generateColors([...senders].length);
   const messageTemplates: Map<Sender, string> = new Map(
     [...senders.values()].map(
-      (sender, i) =>
+      ([sender, senderDetails], i) =>
         [
           sender,
           createMessageTemplate(
             colors[i],
-            (senderAliases && senderAliases[sender]) || sender
+            (senderAliases && senderAliases[sender]) || sender,
+            senderDetails
           ),
         ] as [string, string]
     )

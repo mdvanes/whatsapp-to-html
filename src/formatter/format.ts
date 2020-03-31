@@ -3,7 +3,7 @@ import date from "date-and-time";
 import randomColor from "randomcolor";
 
 const messageTemplate =
-  '<p class="other"><span style="color:{color}" class="participant">{sender}</span> {message} <time>{time}</time></p>';
+  '<p class="{perspective}"><span style="color:{color}" class="participant">{sender}</span> {message} <time>{time}</time></p>';
 
 //#region INTERNALS
 
@@ -15,8 +15,13 @@ function generateColors(count: number): ReadonlyArray<string> {
 
 function createMessageTemplate(color: string, sender: Sender, senderDetails: SenderDetails | false): string {
   return messageTemplate.replace(
-    /{color}(.+){sender}/,
-    (match, p1) => color + p1 + (senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}<span class="phone"> (${senderDetails.phone})</span></span>` : sender)
+    /{perspective}(.+){color}(.+){sender}/,
+    (match, p1, p2) => {
+      const perspective = senderDetails ? senderDetails.perspective : 'you';
+      const senderStr = senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}<span class="phone"> (${senderDetails.phone})</span></span>` : sender;
+
+      return perspective + p1 + color + p2 + senderStr;
+    }
   );
 }
 
@@ -197,7 +202,6 @@ article img {
 
 article p {
     background: white;
-    border-radius: 0 6px 6px 6px;
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
     display: block;
     font-size: 0.8rem;
@@ -206,7 +210,11 @@ article p {
     position: relative;
 }
 
-article p.other:after {
+article p.you {
+    border-radius: 0 6px 6px 6px;
+}
+
+article p.you:after {
     right: 100%;
     top: 10px;
     border: solid transparent;
@@ -217,6 +225,29 @@ article p.other:after {
     pointer-events: none;
     border-color: transparent;
     border-right-color: white;
+    border-width: 8px;
+    margin-top: -10px;
+    /*box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);*/
+    border-top-width: 0;
+    border-bottom-width: 12px;
+}
+
+article p.me {
+    border-radius: 6px 0 6px 6px;
+    margin-left: calc(30% - 10px);
+}
+
+article p.me:after {
+    right: -3%;
+    top: 10px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-left-color: white;
     border-width: 8px;
     margin-top: -10px;
     /*box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);*/

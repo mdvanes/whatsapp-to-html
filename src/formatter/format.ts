@@ -16,7 +16,7 @@ function generateColors(count: number): ReadonlyArray<string> {
 function createMessageTemplate(color: string, sender: Sender, senderDetails: SenderDetails | false): string {
   return messageTemplate.replace(
     /{color}(.+){sender}/,
-    (match, p1) => color + p1 + (senderDetails ? `${senderDetails.name} (${senderDetails.phone})` : sender)
+    (match, p1) => color + p1 + (senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}<span class="phone"> (${senderDetails.phone})</span></span>` : sender)
   );
 }
 
@@ -226,6 +226,14 @@ article p.other:after {
 
 article p .participant {
     display: block;
+}
+
+article p .name {
+    cursor: pointer;
+}
+
+article p .phone {
+    display: none;
 }
 
 article p time {

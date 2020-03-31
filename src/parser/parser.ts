@@ -10,9 +10,9 @@ import senderConfigJson from "../../sender-config.json";
 
 const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?)([^:]+):\s*(.*)/;
 
-const createSenderDetailsFromJson = (senderStr, { name, perspective }): SenderDetails => ({
+const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): SenderDetails => ({
   name,
-  phone: senderStr,
+  phone,
   perspective
 });
 

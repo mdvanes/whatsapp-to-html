@@ -1,10 +1,12 @@
 {
   "+31 6 4444444": {
     "name": "Sender Name",
+    "phone": "+31 6 4444444",
     "perspective": "me"
   },
-  "+31 6 5555555": {
+  "Other Sender Name": {
     "name": "Other Sender Name",
+    "phone": "+31 6 5555555",
     "perspective": "you"
   }
 }

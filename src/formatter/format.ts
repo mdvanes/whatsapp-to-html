@@ -125,6 +125,8 @@ const style = `
 <style>
 :root {
     --shadow-rgb: 0, 0, 0;
+    --you-bg: white;
+    --me-bg: #dcf8c6;
 }
 
 html, body {
@@ -201,7 +203,7 @@ article img {
 }
 
 article p {
-    background: white;
+    background: var(--you-bg);
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
     display: block;
     font-size: 0.8rem;
@@ -224,7 +226,7 @@ article p.you:after {
     position: absolute;
     pointer-events: none;
     border-color: transparent;
-    border-right-color: white;
+    border-right-color: var(--you-bg);
     border-width: 8px;
     margin-top: -10px;
     /*box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);*/
@@ -233,6 +235,7 @@ article p.you:after {
 }
 
 article p.me {
+    background: var(--me-bg);
     border-radius: 6px 0 6px 6px;
     margin-left: calc(30% - 10px);
 }
@@ -247,7 +250,7 @@ article p.me:after {
     position: absolute;
     pointer-events: none;
     border-color: transparent;
-    border-left-color: white;
+    border-left-color: var(--me-bg);
     border-width: 8px;
     margin-top: -10px;
     /*box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);*/

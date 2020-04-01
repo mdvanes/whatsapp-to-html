@@ -9,6 +9,7 @@ const messageTemplate =
 
 function generateColors(count: number): ReadonlyArray<string> {
   return randomColor({
+    luminosity: 'dark',
     count,
   }) as ReadonlyArray<string>;
 }

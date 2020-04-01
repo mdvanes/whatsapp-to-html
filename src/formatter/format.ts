@@ -29,14 +29,24 @@ function createMessageTemplate(color: string, sender: Sender, senderDetails: Sen
 const formatAttachment = (message: string) => {
   if(message.indexOf('file attached') > -1) {
     const resultingMessage = message.replace(
-      /(.*)\.(.*) \(file attached\) (.*)/,
+      /(.*)\.(.*) \(file attached\)(.*)/,
       (match, attachmentName, attachmentExt, restMessage) => {
         if (attachmentExt === 'mp4') {
-          // <video controls><source src="VID-20200203-WA0001.mp4" type="video/mp4"/></video>
           return `<video controls><source src="videos/${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
         } else {
           return `<img src="images/${attachmentName}.${attachmentExt}" /> ${restMessage}`;
         }
+      }
+    );
+
+    return resultingMessage;
+  }
+
+  if(message.indexOf('<Media omitted>') > -1) {
+    const resultingMessage = message.replace(
+      /(.*)<Media omitted>(.*)/,
+      (match, p1, p2) => {
+        return `${p1}(Media omitted)${p2}`;
       }
     );
 

@@ -211,6 +211,7 @@ header h1 {
 
 article img,
 article video {
+    border-radius: 5px;
     display: block;
     margin-bottom: 0.5rem;
     max-width: 200px;

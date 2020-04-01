@@ -199,8 +199,11 @@ header h1 {
     margin: 0;
 }
 
-article img {
-    width: 100px;
+article img,
+article video {
+    display: block;
+    margin-bottom: 0.5rem;
+    max-width: 200px;
 }
 
 article p {

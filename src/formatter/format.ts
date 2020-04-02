@@ -260,7 +260,7 @@ article p.me {
 }
 
 article p.me:after {
-    right: -3%;
+    right: -1rem;
     top: 10px;
     border: solid transparent;
     content: " ";

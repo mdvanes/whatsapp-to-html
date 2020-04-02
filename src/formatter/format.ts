@@ -332,6 +332,19 @@ article h2 span {
     object-fit: contain;
 }
 </style>
+<style media="print">
+    section#main {
+        position: relative;
+    }
+
+    section#main article {
+        overflow: visible;
+    }
+    
+    article p {
+        break-inside: avoid;
+    }
+</style>
 `;
 
 export const htmlPreamble = (title: string) => `<!DOCTYPE html>

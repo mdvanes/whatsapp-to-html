@@ -217,6 +217,10 @@ article video {
     max-width: 200px;
 }
 
+article img {
+    cursor: pointer;
+}
+
 article p {
     background: var(--you-bg);
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
@@ -307,6 +311,26 @@ article h2 span {
     text-align: center;
     width: 300px;
 }
+
+#lightbox {
+    border: none;
+    padding: 1rem;
+    height: calc(100vh - 2rem);
+    width: calc(100vw - 2rem);
+    top: 0;
+    justify-content: center;
+}
+
+#lightbox[open=true] {
+    cursor: pointer;
+    display: flex;
+}
+
+#lightbox img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
 </style>
 `;
 
@@ -334,6 +358,29 @@ export const htmlPostamble = `
 </article>
     </section>
 </div>
+<dialog id="lightbox"></dialog>
+<script>
+  const mediaElems = document.querySelectorAll('img');
+  const dialog = document.querySelector('dialog');
+
+  for(let i = 0; i < mediaElems.length; i++) {
+    const mediaElem = mediaElems[i];
+
+    // On click, add to lightbox
+    mediaElem.addEventListener('click', (ev) => {
+      const elemClone = ev.target.cloneNode(true);
+
+      // On click in lightbox, remove from lightbox
+      dialog.addEventListener('click', (ev) => {
+        dialog.removeChild(elemClone);
+        dialog.removeAttribute('open');
+      });
+
+      dialog.appendChild(elemClone);
+      dialog.setAttribute('open', true);
+    })
+  }
+</script>
 </body></html>`;
 
 //#endregion

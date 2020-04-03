@@ -333,7 +333,21 @@ article h2 span {
 }
 </style>
 <style media="print">
+    body {
+        background-color: transparent;
+        border-top: 3rem solid transparent;
+    }
+
+    header h1 {
+        background-color: lightgrey;
+    }
+
+    .avatar {
+        background: #009688 url("./images/profilepic.jpg") center/100%;
+    }
+
     section#main {
+        box-shadow: none;
         position: relative;
     }
 
@@ -341,8 +355,19 @@ article h2 span {
         overflow: visible;
     }
     
+    article h2 span {
+        box-shadow: none;
+    }
+    
     article p {
         break-inside: avoid;
+        box-shadow: none;
+        
+    }
+    
+    article p.you:after,
+    article p.me:after {
+        border: none;
     }
 </style>
 `;

@@ -353,6 +353,8 @@ article h2 span {
 
     section#main article {
         overflow: visible;
+        padding: 0;
+        column-count: 2;        
     }
     
     article h2 span {

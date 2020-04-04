@@ -80,11 +80,13 @@ function formatMessages(
 
   if (currentMessage.date !== currentDate) {
 
+    // tslint:disable-next-line:no-expression-statement
     date.plugin('two-digit-year');
     const parsedDate = date.parse(currentMessage.date, datePattern);
 
     const formatString = locale === 'nl' ? "dddd, D MMMM YYYY" : "dddd, MMMM D, YYYY";
     if(locale === 'nl') {
+      // tslint:disable-next-line:no-expression-statement
       date.locale('nl');
     }
 
@@ -145,6 +147,7 @@ export function formatHtml({
   return formatMessages(messages, messageTemplates, datePattern, locale).join("\n");
 }
 
+// noinspection CssUnknownTarget
 const style = `
 <style>
 :root {

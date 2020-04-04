@@ -17,6 +17,7 @@ export function whatsappToHtml(
   filePath: string,
   title: string,
   datePattern: DatePattern,
+  locale?: string,
   senderAliases?: { readonly [s: string]: string }
 ): string {
   try {
@@ -27,6 +28,7 @@ export function whatsappToHtml(
       messages: messages,
       senders,
       senderAliases,
+      locale
     }) + htmlPostamble;
   } catch (error) {
     // tslint:disable-next-line:no-expression-statement

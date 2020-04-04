@@ -56,6 +56,7 @@ function main(): void {
   const {
     t: title,
     d: datePattern,
+    l: locale,
     a: senderAliasesPath,
     _: [filePath],
   } = processArgs(process.argv.slice(2));
@@ -64,6 +65,7 @@ function main(): void {
     {
       title,
       datePattern,
+      locale,
       senderAliasesPath,
       filePath,
     },
@@ -83,6 +85,7 @@ function main(): void {
     filePath,
     title,
     datePattern,
+    locale,
     senderAliasesPath &&
       JSON.parse(fs.readFileSync(senderAliasesPath).toString())
   );

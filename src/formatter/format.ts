@@ -1,5 +1,7 @@
 import { WhatsAppMessage, Sender, SenderTuple, SenderDetails } from "@parser/types";
 import date from "date-and-time";
+import 'date-and-time/plugin/two-digit-year';
+import "date-and-time/locale/nl";
 import randomColor from "randomcolor";
 
 const messageTemplate =
@@ -60,6 +62,7 @@ function formatMessages(
   [currentMessage, ...messages]: ReadonlyArray<WhatsAppMessage>,
   messageTemplates: ReadonlyMap<Sender, string>,
   datePattern: string,
+  locale: string = "",
   currentDate: string = "",
   result: ReadonlyArray<string> = [""]
 ): ReadonlyArray<string> {
@@ -76,16 +79,23 @@ function formatMessages(
   );
 
   if (currentMessage.date !== currentDate) {
+    // @ts-ignore
+    date.plugin('two-digit-year');
     const parsedDate = date.parse(currentMessage.date, datePattern);
-    const dateHeader =
-      "\n<h2><span>" +
-      date.format(new Date(parsedDate), "dddd, MMMM D, YYYY") +
-      "</span></h2>\n";
+
+    const formatString = locale === 'nl' ? "dddd, D MMMM YYYY" : "dddd, MMMM D, YYYY";
+    if(locale === 'nl') {
+      date.locale('nl');
+    }
+
+    const formattedDate = date.format(new Date(parsedDate), formatString);
+    const dateHeader = `\n<h2><span>${formattedDate}</span></h2>\n`;
 
     return formatMessages(
       messages,
       messageTemplates,
       datePattern,
+      locale,
       currentMessage.date,
       [...result, dateHeader, resultingMessage]
     );
@@ -94,6 +104,7 @@ function formatMessages(
       messages,
       messageTemplates,
       datePattern,
+      locale,
       currentMessage.date,
       [...result, resultingMessage]
     );
@@ -107,11 +118,13 @@ export function formatHtml({
   messages,
   senders,
   datePattern,
+  locale,
   senderAliases,
 }: {
   readonly messages: ReadonlyArray<WhatsAppMessage>;
   readonly senders: ReadonlySet<SenderTuple>;
   readonly datePattern: string;
+  readonly locale?: string;
   readonly senderAliases?: { readonly [s: string]: string };
 }): string {
   const colors = generateColors([...senders].length);
@@ -129,7 +142,7 @@ export function formatHtml({
     )
   );
 
-  return formatMessages(messages, messageTemplates, datePattern).join("\n");
+  return formatMessages(messages, messageTemplates, datePattern, locale).join("\n");
 }
 
 const style = `

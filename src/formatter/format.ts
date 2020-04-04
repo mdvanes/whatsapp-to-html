@@ -196,7 +196,7 @@ section#main article {
 }
 
 .avatar {
-    background: #009688 url("./images/profilepic.jpg") center/100%;
+    background: #009688;
     border-radius: 50%;
     height: 50px;
     width: 50px;
@@ -342,10 +342,6 @@ article h2 span {
         background-color: lightgrey;
     }
 
-    .avatar {
-        background: #009688 url("./images/profilepic.jpg") center/100%;
-    }
-
     section#main {
         box-shadow: none;
         position: relative;
@@ -399,7 +395,7 @@ export const htmlPreamble = (title: string) => `<!DOCTYPE html>
     <section id="main">
         <div class="bg-chat"></div>
         <header>
-            <div class="avatar"></div>
+            <img class="avatar" src="./images/profilepic.jpg" />
             <h1>${title}</h1>
         </header>
         <article>

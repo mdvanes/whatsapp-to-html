@@ -19,10 +19,36 @@ Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas 
 * External config that maps phone numbers for participants to their name. The config also allows specifying what participant has the "me" perspective in the conversation, and as such will be aligned to the right. Multiple participants can have the "me" perspective.
 * l10n for Dutch dates: by the default the output has date headers that look like this: <h2>Thursday, January 30, 2020</h2> but it should support <h2>Donderdag, 30 januari 2020</h2>
 
-No support for / bugs:
+## TODO
 
-* WhatsApp stickers
-* Leave messages are not displayed properly
+* i10n for dates    
+* convert the HTML (by using CSS print styles) to PDF
+    Print styles: what do with video?
+    Print styles: align time stamps to left, 
+    Print styles: use serif font?, 
+* bug: initial message & people added/left messages should not get merged into other messages 
+* font-size on mobile may be too small
+* move attachment detection from format to parsing
+* enhancement: next/prev day button
+
+## Changelog
+
+* Print styles: fix profilepic, 2 columns, remove balloon outlines, prevent page breaks on paragraphs, paragraphs 90% width
+  show telnr, remove colors for contact name on you perspective, add supertitle line to document title with "My WhatsApp Story:" and use larger and bolder font here
+* media lightbox
+* fixed green arrow on mobile is not visible
+* fixed bug: media is not replaced if there is no space following "file attached)", e.g.  VID-20200318-WA0004.mp4 (file attached)
+* Replace <Media ommitted> by (Media ommitted)
+* add line break after img/video. 
+* random colors should be only high contrast
+* manual: old media
+* manual: participants
+* The HTML inlines the used media
+* Also support webp
+
+## No support for / bugs:
+
+* WhatsApp stickers from export without media, manually exporting is very cumbersome
 
 ## Usage
 

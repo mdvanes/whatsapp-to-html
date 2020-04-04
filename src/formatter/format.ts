@@ -340,6 +340,20 @@ article h2 span {
 
     header h1 {
         background-color: lightgrey;
+        font-size: 4rem;
+        font-weight: bold;
+        /* bug: In Chrome, with print styles, this causes problems with breaking in other elements: white-space: nowrap;*/
+        overflow-x: hidden;
+        text-overflow: ellipsis;        
+    }
+    
+    header h1:before {
+        content: 'My WhatsApp Story';
+        display: block;
+        font-family: sans-serif;
+        font-size: 1rem;
+        font-style: italic;
+        font-weight: normal;
     }
 
     section#main {
@@ -348,12 +362,21 @@ article h2 span {
         width: auto;
         max-width: max-content;
     }
+    
+    section#main header {
+        height: 150px;
+    }
 
     section#main article {
         overflow: visible;
         column-count: 2;
         column-gap: 2em;
         padding: 0;
+    }
+    
+    .avatar {
+        height: 150px;
+        width: 150px;
     }
     
     article h2 span {

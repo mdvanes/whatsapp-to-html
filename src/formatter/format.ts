@@ -375,6 +375,18 @@ article h2 span {
         border: none;
     }
 
+    article p.you .participant {
+        color: black !important;
+    }
+
+    article p .name {
+        font-weight: bold;
+    }
+
+    article p .phone {
+        display: inline;
+    }
+
     article img {
         max-width: 100%;
     }

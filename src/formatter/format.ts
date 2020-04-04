@@ -349,12 +349,15 @@ article h2 span {
     section#main {
         box-shadow: none;
         position: relative;
+        width: auto;
+        max-width: max-content;
     }
 
     section#main article {
         overflow: visible;
+        column-count: 2;
+        column-gap: 2em;
         padding: 0;
-        column-count: 2;        
     }
     
     article h2 span {
@@ -364,12 +367,20 @@ article h2 span {
     article p {
         break-inside: avoid;
         box-shadow: none;
-        
+        width: 90%;
+    }
+    
+    article p.me {
+        margin-left: calc(10% - 20px);
     }
     
     article p.you:after,
     article p.me:after {
         border: none;
+    }
+
+    article img {
+        max-width: 100%;
     }
 </style>
 `;

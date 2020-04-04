@@ -79,7 +79,7 @@ function formatMessages(
   );
 
   if (currentMessage.date !== currentDate) {
-    // @ts-ignore
+
     date.plugin('two-digit-year');
     const parsedDate = date.parse(currentMessage.date, datePattern);
 

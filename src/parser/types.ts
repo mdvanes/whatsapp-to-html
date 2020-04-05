@@ -13,6 +13,9 @@ export interface WhatsAppMessage {
   readonly sender: Sender;
   readonly senderDetails: SenderDetails | false;
   readonly message: string;
+  readonly isMeta: boolean;
+  readonly hasOmittedMedia: boolean;
+  readonly attachment: string | false;
 }
 
 export type SenderTuple = [Sender, SenderDetails | false];

@@ -8,7 +8,11 @@ import senderConfigJson from "../../sender-config.json";
 
 //#region INTERNALS
 
-const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?)([^:]+):\s*(.*)/;
+// const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?)([^:]+):\s*(.*)/;
+
+const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?) - (.*)/;
+// const parseRestRegExp = /([^:]+):\s*(.*)/;
+const parseRestRegExp = /([^:]+):\s*((.*)\(file attached\))?(<Media omitted>)?\s(.*)/;
 
 const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): SenderDetails => ({
   name,
@@ -24,17 +28,64 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
   const res = parseRegExp.exec(message);
 
   if(res) {
-    const senderStr = sanitizeSender(res[3]);
-    const jsonEntry = senderConfigJson[senderStr];
-    const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
+    const [fullMatch, date, time, rest] = res;
+    // console.log('RES:', fullMatch);
+    // console.log(date, '|', time, '|', rest);
+    // if(rest.indexOf(':') > -1) {
+    //   // console.log('this is a meta message');
+    // }
+    const restResult = parseRestRegExp.exec(rest);
 
-    return {
-      date: res[1],
-      time: res[2],
-      sender: senderStr,
-      senderDetails,
-      message: res[4],
-    };
+    if(restResult) {
+      const [restFullMatch, senderMatch, _, attachment, omitted, messageContent] = restResult;
+      const hasOmittedMedia = Boolean(omitted);
+      // console.log('REST:', senderMatch, '|', attachment, '|', hasOmittedMedia, '|', message);
+
+      const senderStr = sanitizeSender(senderMatch);
+      const jsonEntry = senderConfigJson[senderStr];
+      const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
+
+      return {
+        date,
+        time,
+        sender: senderStr,
+        senderDetails,
+        message: messageContent,
+        isMeta: false,
+        hasOmittedMedia,
+        attachment: attachment ? attachment : false
+      };
+
+    } else {
+      // console.log('META:', rest);
+
+      return {
+        date,
+        time,
+        sender: "",
+        senderDetails: false,
+        message: rest,
+        isMeta: true,
+        hasOmittedMedia: false,
+        attachment: false
+      };
+
+    }
+    // console.log(''); // line break
+
+    // TODO also parse (file attached) and <Media omitted>
+
+    // const senderStr = sanitizeSender(res[3]);
+    // const jsonEntry = senderConfigJson[senderStr];
+    // const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
+    //
+    // return {
+    //   date: res[1],
+    //   time: res[2],
+    //   sender: senderStr,
+    //   senderDetails,
+    //   message: res[4],
+    // };
   } else {
     return null;
   }

@@ -58,6 +58,23 @@ const formatAttachment = (message: string) => {
   return message;
 };
 
+const getResultingMessage = (currentMessage, messageTemplates) => {
+  const template = messageTemplates.get(currentMessage.sender);
+  if (!template)
+    throw new Error(
+      "unknown sender in message: " + JSON.stringify(currentMessage)
+    );
+
+  if(currentMessage.isMeta) {
+    return `\n<div class="meta"><span>${currentMessage.message}</span></div>\n`;
+  }
+
+  return (template as string).replace(
+    /{message}(.+){time}/,
+    (match, p1) => formatAttachment(currentMessage.message) + p1 + currentMessage.time
+  );
+};
+
 function formatMessages(
   [currentMessage, ...messages]: ReadonlyArray<WhatsAppMessage>,
   messageTemplates: ReadonlyMap<Sender, string>,
@@ -68,15 +85,7 @@ function formatMessages(
 ): ReadonlyArray<string> {
   if (!currentMessage) return result;
 
-  const template = messageTemplates.get(currentMessage.sender);
-  if (!template)
-    throw new Error(
-      "unknown sender in message: " + JSON.stringify(currentMessage)
-    );
-  const resultingMessage = (template as string).replace(
-    /{message}(.+){time}/,
-    (match, p1) => formatAttachment(currentMessage.message) + p1 + currentMessage.time
-  );
+  const resultingMessage = getResultingMessage(currentMessage, messageTemplates);
 
   if (currentMessage.date !== currentDate) {
 
@@ -85,7 +94,7 @@ function formatMessages(
     const parsedDate = date.parse(currentMessage.date, datePattern);
 
     const formatString = locale === 'nl' ? "dddd, D MMMM YYYY" : "dddd, MMMM D, YYYY";
-    if(locale === 'nl') {
+    if (locale === 'nl') {
       // tslint:disable-next-line:no-expression-statement
       date.locale('nl');
     }
@@ -312,12 +321,14 @@ article p time {
     text-align: right;
 }
 
-article h2 {
+article h2,
+article .meta {
     display: flex;
     justify-content: center;
 }
 
-article h2 span {
+article h2 span,
+article .meta span {
     background: #e1f2fb;
     border-radius: 6px;
     box-shadow: 1px 1px 2px 2px rgba(var(--shadow-rgb), 0.06);
@@ -326,6 +337,15 @@ article h2 span {
     padding: 0.5rem;
     text-align: center;
     width: 300px;
+}
+
+article .meta {
+    margin: 0.5rem 0;
+}
+
+article .meta span {
+    font-size: 0.8rem;
+    width: 90%;
 }
 
 #lightbox {

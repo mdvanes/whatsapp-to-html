@@ -42,18 +42,6 @@ const formatAttachment = ({message, hasOmittedMedia, attachment}: WhatsAppMessag
     return `${attachmentElem} ${message}`;
   }
 
-  // if(message.indexOf('<Media omitted>') > -1) {
-  //   const resultingMessage = message.replace(
-  //     /(.*)<Media omitted>(.*)/,
-  //     (match, p1, p2) => {
-  //       return `${p1}(Media omitted)${p2}`;
-  //     }
-  //   );
-  //
-  //   return resultingMessage;
-  // }
-
-  console.log(hasOmittedMedia, message);
   if(hasOmittedMedia) {
     return `(Media omitted) ${message}`;
   }
@@ -71,7 +59,7 @@ const getResultingMessage = (
     );
 
   if(currentMessage.isMeta) {
-    return `\n<div class="meta"><span>${currentMessage.message}</span></div>\n`;
+    return `<div class="meta"><span>${currentMessage.message}</span></div>`;
   }
 
   return (template as string).replace(

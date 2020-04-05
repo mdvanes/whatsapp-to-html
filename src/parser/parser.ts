@@ -8,11 +8,8 @@ import senderConfigJson from "../../sender-config.json";
 
 //#region INTERNALS
 
-// const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?)([^:]+):\s*(.*)/;
-
 const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?) - (.*)/;
-// const parseRestRegExp = /([^:]+):\s*(.*)/;
-const parseRestRegExp = /([^:]+):\s*((.*)\(file attached\))?(<Media omitted>)?\s(.*)/;
+const parseRestRegExp = /([^:]+):\s*((.*)\(file attached\))?\s(.*)/;
 
 const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): SenderDetails => ({
   name,
@@ -29,18 +26,12 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
 
   if(res) {
     const [fullMatch, date, time, rest] = res;
-    // console.log('RES:', fullMatch);
-    // console.log(date, '|', time, '|', rest);
-    // if(rest.indexOf(':') > -1) {
-    //   // console.log('this is a meta message');
-    // }
     const restResult = parseRestRegExp.exec(rest);
 
     if(restResult) {
-      const [restFullMatch, senderMatch, _, attachment, omitted, messageContent] = restResult;
-      const hasOmittedMedia = Boolean(omitted);
-      // console.log('REST:', senderMatch, '|', attachment, '|', hasOmittedMedia, '|', message);
-
+      const [restFullMatch, senderMatch, _, attachment, messageMatch] = restResult;
+      const hasOmittedMedia = messageMatch === '<Media omitted>';
+      const messageContent = hasOmittedMedia ? '' : messageMatch;
       const senderStr = sanitizeSender(senderMatch);
       const jsonEntry = senderConfigJson[senderStr];
       const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
@@ -55,10 +46,7 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
         hasOmittedMedia,
         attachment: attachment ? attachment : false
       };
-
     } else {
-      // console.log('META:', rest);
-
       return {
         date,
         time,
@@ -69,23 +57,7 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
         hasOmittedMedia: false,
         attachment: false
       };
-
     }
-    // console.log(''); // line break
-
-    // TODO also parse (file attached) and <Media omitted>
-
-    // const senderStr = sanitizeSender(res[3]);
-    // const jsonEntry = senderConfigJson[senderStr];
-    // const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
-    //
-    // return {
-    //   date: res[1],
-    //   time: res[2],
-    //   sender: senderStr,
-    //   senderDetails,
-    //   message: res[4],
-    // };
   } else {
     return null;
   }

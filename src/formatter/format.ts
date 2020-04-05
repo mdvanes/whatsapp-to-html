@@ -28,37 +28,42 @@ function createMessageTemplate(color: string, sender: Sender, senderDetails: Sen
   );
 }
 
-const formatAttachment = (message: string) => {
-  if(message.indexOf('file attached') > -1) {
-    const resultingMessage = message.replace(
-      /(.*)\.(.*) \(file attached\)(.*)/,
-      (match, attachmentName, attachmentExt, restMessage) => {
+const formatAttachment = ({message, hasOmittedMedia, attachment}: WhatsAppMessage) => {
+  if( attachment ) {
+    const attachmentElem = attachment.replace(
+      /(.*)\.(.*)/, (match, attachmentName, attachmentExt ) => {
         if (attachmentExt === 'mp4') {
-          return `<video controls><source src="videos/${attachmentName}.${attachmentExt}" type="video/mp4" /></video> ${restMessage}`;
+          return `<video controls><source src="videos/${attachmentName}.${attachmentExt}" type="video/mp4" /></video>`;
         } else {
-          return `<img src="images/${attachmentName}.${attachmentExt}" /> ${restMessage}`;
+          return `<img src="images/${attachmentName}.${attachmentExt}" />`;
         }
-      }
-    );
+      });
 
-    return resultingMessage;
+    return `${attachmentElem} ${message}`;
   }
 
-  if(message.indexOf('<Media omitted>') > -1) {
-    const resultingMessage = message.replace(
-      /(.*)<Media omitted>(.*)/,
-      (match, p1, p2) => {
-        return `${p1}(Media omitted)${p2}`;
-      }
-    );
+  // if(message.indexOf('<Media omitted>') > -1) {
+  //   const resultingMessage = message.replace(
+  //     /(.*)<Media omitted>(.*)/,
+  //     (match, p1, p2) => {
+  //       return `${p1}(Media omitted)${p2}`;
+  //     }
+  //   );
+  //
+  //   return resultingMessage;
+  // }
 
-    return resultingMessage;
+  console.log(hasOmittedMedia, message);
+  if(hasOmittedMedia) {
+    return `(Media omitted) ${message}`;
   }
 
   return message;
 };
 
-const getResultingMessage = (currentMessage, messageTemplates) => {
+const getResultingMessage = (
+  currentMessage: WhatsAppMessage,
+  messageTemplates: ReadonlyMap<Sender, string>) => {
   const template = messageTemplates.get(currentMessage.sender);
   if (!template)
     throw new Error(
@@ -71,7 +76,7 @@ const getResultingMessage = (currentMessage, messageTemplates) => {
 
   return (template as string).replace(
     /{message}(.+){time}/,
-    (match, p1) => formatAttachment(currentMessage.message) + p1 + currentMessage.time
+    (match, p1) => formatAttachment(currentMessage) + p1 + currentMessage.time
   );
 };
 

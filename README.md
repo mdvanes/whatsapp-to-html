@@ -21,7 +21,6 @@ Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas 
 
 ## TODO
 
-* bug: initial message & people added/left messages should not get merged into other messages 
 * technical debt: consolidate sender-config.json import with senderAliasesPath in cli.ts
 * technical debt: move attachment detection from format to parsing
 * enhancement: Print styles: what do with video?
@@ -32,6 +31,7 @@ Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas 
 
 ## Changelog
 
+* fixed bug: initial message & people added/left messages should not get merged into other messages
 * added --hide-meta flag to disable meta messages 
 * i10n for Dutch date formatting
 * Print styles: fix profilepic, 2 columns, remove balloon outlines, prevent page breaks on paragraphs, paragraphs 90% width

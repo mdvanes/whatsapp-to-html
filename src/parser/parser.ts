@@ -9,7 +9,7 @@ import senderConfigJson from "../../sender-config.json";
 //#region INTERNALS
 
 const parseRegExp = /([\d\/]+),\s*([\d:]{4,}(?:\s*[AP]M)?) - (.*)/;
-const parseRestRegExp = /([^:]+):\s*((.*)\(file attached\))?\s(.*)/;
+const parseRestRegExp = /([^:]+):\s*((.*)\(file attached\))?(.*)/;
 
 const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): SenderDetails => ({
   name,
@@ -44,7 +44,7 @@ function _parseMessage(message: string): ParsedWhatsAppMessage {
         message: messageContent,
         isMeta: false,
         hasOmittedMedia,
-        attachment: attachment ? attachment : false
+        attachment: attachment ? attachment.trim() : false
       };
     } else {
       return {

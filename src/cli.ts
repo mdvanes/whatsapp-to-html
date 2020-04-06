@@ -29,7 +29,10 @@ const argValidations: {
 function processArgs(argv: Array<string>): minimist.ParsedArgs {
   const parsedArgs = minimist(argv, {
     default: {
+      t: "",
       d: "",
+      l: "",
+      'hide-meta': false,
       a: null,
     },
   });
@@ -57,6 +60,7 @@ function main(): void {
     t: title,
     d: datePattern,
     l: locale,
+    'hide-meta': hideMeta,
     a: senderAliasesPath,
     _: [filePath],
   } = processArgs(process.argv.slice(2));
@@ -66,6 +70,7 @@ function main(): void {
       title,
       datePattern,
       locale,
+      hideMeta,
       senderAliasesPath,
       filePath,
     },
@@ -86,6 +91,7 @@ function main(): void {
     title,
     datePattern,
     locale,
+    hideMeta,
     senderAliasesPath &&
       JSON.parse(fs.readFileSync(senderAliasesPath).toString())
   );

@@ -50,6 +50,7 @@ const formatAttachment = ({message, hasOmittedMedia, attachment}: WhatsAppMessag
 };
 
 const getResultingMessage = (
+  hideMeta: boolean,
   currentMessage: WhatsAppMessage,
   messageTemplates: ReadonlyMap<Sender, string>) => {
   const template = messageTemplates.get(currentMessage.sender);
@@ -58,8 +59,10 @@ const getResultingMessage = (
       "unknown sender in message: " + JSON.stringify(currentMessage)
     );
 
-  if(currentMessage.isMeta) {
+  if(!hideMeta && currentMessage.isMeta) {
     return `<div class="meta"><span>${currentMessage.message}</span></div>`;
+  } else if (hideMeta && currentMessage.isMeta) {
+    return '';
   }
 
   return (template as string).replace(
@@ -72,13 +75,14 @@ function formatMessages(
   [currentMessage, ...messages]: ReadonlyArray<WhatsAppMessage>,
   messageTemplates: ReadonlyMap<Sender, string>,
   datePattern: string,
-  locale: string = "",
+  locale: string,
+  hideMeta: boolean,
   currentDate: string = "",
   result: ReadonlyArray<string> = [""]
 ): ReadonlyArray<string> {
   if (!currentMessage) return result;
 
-  const resultingMessage = getResultingMessage(currentMessage, messageTemplates);
+  const resultingMessage = getResultingMessage(hideMeta, currentMessage, messageTemplates);
 
   if (currentMessage.date !== currentDate) {
 
@@ -100,6 +104,7 @@ function formatMessages(
       messageTemplates,
       datePattern,
       locale,
+      hideMeta,
       currentMessage.date,
       [...result, dateHeader, resultingMessage]
     );
@@ -109,6 +114,7 @@ function formatMessages(
       messageTemplates,
       datePattern,
       locale,
+      hideMeta,
       currentMessage.date,
       [...result, resultingMessage]
     );
@@ -123,12 +129,14 @@ export function formatHtml({
   senders,
   datePattern,
   locale,
+  hideMeta,
   senderAliases,
 }: {
   readonly messages: ReadonlyArray<WhatsAppMessage>;
   readonly senders: ReadonlySet<SenderTuple>;
   readonly datePattern: string;
-  readonly locale?: string;
+  readonly locale: string;
+  readonly hideMeta: boolean;
   readonly senderAliases?: { readonly [s: string]: string };
 }): string {
   const colors = generateColors([...senders].length);
@@ -146,7 +154,7 @@ export function formatHtml({
     )
   );
 
-  return formatMessages(messages, messageTemplates, datePattern, locale).join("\n");
+  return formatMessages(messages, messageTemplates, datePattern, locale, hideMeta).join("\n");
 }
 
 // noinspection CssUnknownTarget

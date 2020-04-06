@@ -32,6 +32,7 @@ Many thanks to [Daniel Plisetsky](https://github.com/danplisetsky) and [Andreas 
 
 ## Changelog
 
+* added --hide-meta flag to disable meta messages 
 * i10n for Dutch date formatting
 * Print styles: fix profilepic, 2 columns, remove balloon outlines, prevent page breaks on paragraphs, paragraphs 90% width
   show telnr, remove colors for contact name on you perspective, add supertitle line to document title with "My WhatsApp Story:" and use larger and bolder font here
@@ -57,9 +58,10 @@ This version is NOT published to NPM at the moment. To run:
 * git checkout
 * npm i
 * npm start
-* ./bin/cli -t "Title" -d M/D/YYYY -l "nl" -- whatsapp_export.txt > result.html
+* ./bin/cli -t "Title" -d M/D/YYYY -l "nl" --hide-meta -- whatsapp_export.txt > result.html
     * where -t is the title that is shown at the start of the document
     * where -l is the optional locale, if not supplied "en" is used, otherwise only "nl" is supported
+    * --hide-meta optional flag to hide meta messages (default is false)
 
 ## DOES NOT WORK! To retrieve a full export
 

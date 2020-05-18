@@ -7,7 +7,7 @@ import { formatHtml, htmlPostamble, htmlPreamble } from "@formatter/format";
  * "DD/MM/YYYY",
  * "MM/D/YY"
  */
-type DatePattern = string;
+export type DatePattern = string;
 
 /**
  * @param filePath
@@ -22,7 +22,7 @@ export function whatsappToHtml(
   senderAliases?: { readonly [s: string]: string }
 ): string {
   try {
-    const { messages, senders } = parseFile(filePath);
+    const { messages, senders } = parseFile(filePath, datePattern);
 
     return htmlPreamble(title) + formatHtml({
       datePattern: datePattern,

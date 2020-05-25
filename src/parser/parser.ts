@@ -3,8 +3,6 @@ import * as os from "os";
 
 import { WhatsAppMessage, ParsedWhatsAppMessage, Sender, SenderDetails, SenderTuple } from "@parser/types";
 import { sanitize } from "@utils/string";
-// TODO make conditional depending on flag
-import senderConfigJson from "../../sender-config.json";
 import { DatePattern } from "../index";
 
 //#region INTERNALS
@@ -25,7 +23,8 @@ const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): S
   perspective
 });
 
-function _parseMessage(message: string, parseRegExp: RegExp, parseRestRegExp: RegExp): ParsedWhatsAppMessage {
+function _parseMessage(message: string, parseRegExp: RegExp, parseRestRegExp: RegExp,
+  senderAliases?: { readonly [s: string]: SenderDetails }): ParsedWhatsAppMessage {
   function sanitizeSender(sender: string): string {
     return sanitize(sender, /[\+\s\d\p{L}]/u);
   }
@@ -41,7 +40,7 @@ function _parseMessage(message: string, parseRegExp: RegExp, parseRestRegExp: Re
       const hasOmittedMedia = messageMatch === '<Media omitted>';
       const messageContent = hasOmittedMedia ? '' : messageMatch;
       const senderStr = sanitizeSender(senderMatch);
-      const jsonEntry = senderConfigJson[senderStr];
+      const jsonEntry = senderAliases ? senderAliases[senderStr] : false;
       const senderDetails: SenderDetails | false = jsonEntry ? createSenderDetailsFromJson(senderStr, jsonEntry) : false;
 
       return {
@@ -77,7 +76,8 @@ function _parseMessage(message: string, parseRegExp: RegExp, parseRestRegExp: Re
 
 export function parseFile(
   path: string,
-  datePattern: DatePattern
+  datePattern: DatePattern,
+  senderAliases?: { readonly [s: string]: SenderDetails }
 ): {
   readonly messages: ReadonlyArray<WhatsAppMessage>;
   readonly senders: ReadonlySet<SenderTuple>;
@@ -97,9 +97,8 @@ export function parseFile(
     }
   }, []);
   const parsedMessages = messages.map(
-    message => _parseMessage(message, parseRegExp, parseRestRegExp) as WhatsAppMessage
+    message => _parseMessage(message, parseRegExp, parseRestRegExp, senderAliases) as WhatsAppMessage
   );
-  // console.log('1', parsedMessages)
   const senders = new Set(parsedMessages.map((pm): SenderTuple => [pm.sender, pm.senderDetails]));
 
   return {

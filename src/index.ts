@@ -1,5 +1,6 @@
 import { parseFile } from "@parser/parser";
 import { formatHtml, htmlPostamble, htmlPreamble } from "@formatter/format";
+import { SenderDetails } from "@parser/types";
 
 /**
  * @description The way the dates are formatted in the input file
@@ -19,16 +20,15 @@ export function whatsappToHtml(
   datePattern: DatePattern,
   locale: string,
   hideMeta: boolean,
-  senderAliases?: { readonly [s: string]: string }
+  senderAliases?: { readonly [s: string]: SenderDetails }
 ): string {
   try {
-    const { messages, senders } = parseFile(filePath, datePattern);
+    const { messages, senders } = parseFile(filePath, datePattern, senderAliases);
 
     return htmlPreamble(title) + formatHtml({
       datePattern: datePattern,
       messages: messages,
       senders,
-      senderAliases,
       locale,
       hideMeta
     }) + htmlPostamble;

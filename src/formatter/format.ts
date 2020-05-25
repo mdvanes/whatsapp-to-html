@@ -129,15 +129,13 @@ export function formatHtml({
   senders,
   datePattern,
   locale,
-  hideMeta,
-  senderAliases,
+  hideMeta
 }: {
   readonly messages: ReadonlyArray<WhatsAppMessage>;
   readonly senders: ReadonlySet<SenderTuple>;
   readonly datePattern: string;
   readonly locale: string;
   readonly hideMeta: boolean;
-  readonly senderAliases?: { readonly [s: string]: string };
 }): string {
   const colors = generateColors([...senders].length);
   const messageTemplates: Map<Sender, string> = new Map(
@@ -147,7 +145,7 @@ export function formatHtml({
           sender,
           createMessageTemplate(
             colors[i],
-            (senderAliases && senderAliases[sender]) || sender,
+            sender,
             senderDetails
           ),
         ] as [string, string]

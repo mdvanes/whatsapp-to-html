@@ -21,7 +21,8 @@ function createMessageTemplate(color: string, sender: Sender, senderDetails: Sen
     /{perspective}(.+){color}(.+){sender}/,
     (match, p1, p2) => {
       const perspective = senderDetails ? senderDetails.perspective : 'you';
-      const senderStr = senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}<span class="phone"> (${senderDetails.phone})</span></span>` : sender;
+      const phoneStr = senderDetails && senderDetails.phone ? `<span class="phone"> (${senderDetails.phone})</span>` : "";
+      const senderStr = senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}${phoneStr}</span>` : sender;
 
       const finalColor = senderDetails && senderDetails.color || color;
       return perspective + p1 + finalColor + p2 + senderStr;

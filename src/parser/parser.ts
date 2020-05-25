@@ -17,10 +17,11 @@ const PARSE_REST_REG_EXP: Record<string, RegExp> = {
   NL: /([^:]+):\s*((.*)\(bestand bijgevoegd\))?(.*)/
 };
 
-const createSenderDetailsFromJson = (senderStr, { name, phone, perspective }): SenderDetails => ({
+const createSenderDetailsFromJson = (senderStr, { name, phone, perspective, ...rest }): SenderDetails => ({
   name,
   phone,
-  perspective
+  perspective,
+  color: rest.color || undefined
 });
 
 function _parseMessage(message: string, parseRegExp: RegExp, parseRestRegExp: RegExp,

@@ -23,7 +23,8 @@ function createMessageTemplate(color: string, sender: Sender, senderDetails: Sen
       const perspective = senderDetails ? senderDetails.perspective : 'you';
       const senderStr = senderDetails ? `<span class="name" title="${senderDetails.phone}">${senderDetails.name}<span class="phone"> (${senderDetails.phone})</span></span>` : sender;
 
-      return perspective + p1 + color + p2 + senderStr;
+      const finalColor = senderDetails && senderDetails.color || color;
+      return perspective + p1 + finalColor + p2 + senderStr;
     }
   );
 }

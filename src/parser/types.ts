@@ -2,6 +2,7 @@ export interface SenderDetails {
   readonly name: string;
   readonly phone: string;
   readonly perspective: "me" | "you";
+  readonly color?: string;
 }
 
 export type Sender = string;
